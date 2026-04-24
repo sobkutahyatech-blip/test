@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داشبورد الحضور 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;900&display=swap" rel="stylesheet">
+<!-- مكتبة كاميرا QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#F0D080;--dark:#06060D;--card:#0C0C18;
+  --card2:#101020;--border:#1A1A2C;--text:#EEEEF8;--muted:#6868A0;
+  --green:#1DB954;--red:#E63946;--orange:#FF9500;--blue:#3A86FF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;}
+
+/* ── HEADER ── */
+header{background:rgba(6,6,13,.97);border-bottom:1px solid var(--border);padding:0 1.4rem;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.hlogo{color:var(--gold);font-weight:800;font-size:.92rem;}
+.hright{display:flex;align-items:center;gap:7px;}
+.live{display:flex;align-items:center;gap:5px;font-size:.74rem;color:var(--green);}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.hbtn{background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:6px;font-family:'Tajawal',sans-serif;font-size:.76rem;cursor:pointer;transition:all .2s;}
+.hbtn:hover{color:var(--text);background:rgba(255,255,255,.08);}
+.hbtn.active-btn{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:3px;padding:.6rem 1.4rem;border-bottom:1px solid var(--border);}
+.tab{padding:5px 14px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--muted);font-family:'Tajawal',sans-serif;font-size:.81rem;cursor:pointer;transition:all .2s;}
+.tab:hover{color:var(--text);background:rgba(255,255,255,.04);}
+.tab.active{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.35);color:var(--gold);font-weight:700;}
+
+.wrap{padding:1.1rem 1.4rem;max-width:1400px;margin:0 auto;}
+.tp{display:none;}.tp.active{display:block;}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem;margin-bottom:1.1rem;}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.9rem;text-align:center;position:relative;overflow:hidden;transition:transform .2s;}
+.stat:hover{transform:translateY(-1px);}
+.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.s1::before{background:var(--gold);}.s2::before{background:var(--green);}
+.s3::before{background:var(--orange);}.s4::before{background:var(--blue);}
+.s5::before{background:var(--red);}
+.sn{font-size:1.8rem;font-weight:900;line-height:1;transition:all .3s;}
+.s1 .sn{color:var(--gold);}.s2 .sn{color:var(--green);}
+.s3 .sn{color:var(--orange);}.s4 .sn{color:var(--blue);}.s5 .sn{color:var(--red);}
+.sl{font-size:.66rem;color:var(--muted);margin-top:3px;}
+
+/* ── MAIN GRID ── */
+.main-grid{display:grid;grid-template-columns:390px 1fr;gap:1rem;}
+
+/* ── SCANNER PANEL ── */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.ph{padding:.8rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.ph h3{font-size:.86rem;font-weight:700;display:flex;align-items:center;gap:6px;}
+.pb{padding:1rem;}
+
+/* ── اختيار وضع المسح ── */
+.scan-mode-btns{display:flex;gap:6px;margin-bottom:.9rem;}
+.mode-btn{flex:1;padding:8px;border-radius:8px;border:1.5px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted);font-family:'Tajawal',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:600;}
+.mode-btn:hover{border-color:var(--gold);color:var(--text);}
+.mode-btn.active{border-color:var(--gold);background:rgba(201,168,76,.1);color:var(--gold);}
+
+/* ── USB ZONE ── */
+.usb-zone{border:2px dashed var(--border);border-radius:10px;padding:1.2rem 1rem;text-align:center;cursor:pointer;transition:all .3s;margin-bottom:.8rem;position:relative;}
+.usb-zone.ready{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.02);}
+.usb-zone.flash-ok{border-color:var(--green);background:rgba(29,185,84,.08);animation:fok .5s;}
+.usb-zone.flash-err{border-color:var(--red);background:rgba(230,57,70,.08);animation:ferr .4s;}
+@keyframes fok{0%{background:rgba(29,185,84,.3)}100%{background:rgba(29,185,84,.08)}}
+@keyframes ferr{0%,50%{background:rgba(230,57,70,.3)}100%{background:rgba(230,57,70,.08)}}
+.sz-icon{font-size:2rem;display:block;margin-bottom:5px;}
+.usb-zone p{font-size:.76rem;color:var(--muted);line-height:1.6;}
+#qrInput{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;}
+
+/* ── CAMERA ZONE ── */
+.camera-zone{margin-bottom:.8rem;border-radius:10px;overflow:hidden;display:none;}
+.camera-zone.active{display:block;}
+#qr-reader{border-radius:10px;overflow:hidden;}
+#qr-reader video{border-radius:10px;}
+/* تخصيص مظهر مكتبة html5-qrcode */
+#qr-reader__scan_region{border-radius:10px!important;}
+#qr-reader__dashboard{background:var(--card2)!important;border-top:1px solid var(--border)!important;padding:8px!important;}
+#qr-reader__dashboard button{background:rgba(201,168,76,.1)!important;border:1px solid var(--gold)!important;color:var(--gold)!important;border-radius:6px!important;font-family:'Tajawal',sans-serif!important;padding:5px 12px!important;cursor:pointer!important;}
+#qr-reader__dashboard select{background:var(--card)!important;color:var(--text)!important;border:1px solid var(--border)!important;border-radius:6px!important;padding:4px!important;}
+.camera-status{font-size:.76rem;color:var(--muted);text-align:center;padding:.4rem;margin-bottom:.4rem;}
+
+/* ── ATTENDEE PICKER ── */
+.picker{background:var(--card2);border:2px solid rgba(201,168,76,.3);border-radius:12px;overflow:hidden;display:none;margin-bottom:.8rem;}
+.picker.show{display:block;animation:si .25s ease;}
+@keyframes si{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.picker-head{padding:.75rem 1rem;background:rgba(201,168,76,.06);border-bottom:1px solid var(--border);}
+.picker-head h4{font-size:.86rem;font-weight:700;color:var(--gold-l);margin-bottom:2px;}
+.picker-head p{font-size:.72rem;color:var(--muted);}
+.picker-body{padding:.8rem;}
+
+.person-row{display:flex;align-items:center;gap:10px;border-radius:9px;padding:.65rem .9rem;margin-bottom:.45rem;border:1.5px solid var(--border);background:rgba(255,255,255,.02);transition:all .15s;}
+.person-row:last-child{margin-bottom:0;}
+.person-row.is-grad{border-color:rgba(29,185,84,.3);background:rgba(29,185,84,.04);}
+.person-row.is-guest{border-color:rgba(255,149,0,.25);background:rgba(255,149,0,.03);}
+.person-row.is-done{border-color:rgba(80,80,120,.3);background:rgba(0,0,0,.15);opacity:.6;}
+
+.pr-left{flex:1;min-width:0;}
+.pr-badge{font-size:.6rem;font-weight:800;letter-spacing:.7px;padding:2px 6px;border-radius:6px;display:inline-block;margin-bottom:3px;}
+.pr-badge.grad{background:rgba(29,185,84,.15);color:var(--green);}
+.pr-badge.guest{background:rgba(255,149,0,.15);color:var(--orange);}
+.pr-badge.done{background:rgba(80,80,120,.15);color:var(--muted);}
+.pr-name{font-size:.9rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.person-row.is-done .pr-name{color:var(--muted);}
+.pr-sub{font-size:.7rem;color:var(--muted);margin-top:1px;}
+
+.confirm-btn{
+  background:linear-gradient(135deg,#1DB954,#2ecc71);
+  color:#000;border:none;border-radius:7px;
+  padding:7px 13px;font-family:'Tajawal',sans-serif;
+  font-size:.79rem;font-weight:700;cursor:pointer;
+  transition:all .15s;white-space:nowrap;flex-shrink:0;
+}
+.confirm-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(29,185,84,.4);}
+.confirm-btn:active{transform:scale(.97);}
+.confirm-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.done-label{font-size:.73rem;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+
+/* نتيجة سريعة */
+.quick-result{
+  border-radius:9px;padding:.6rem .9rem;margin-bottom:.7rem;
+  display:none;font-size:.85rem;font-weight:600;
+  align-items:center;gap:8px;
+}
+.quick-result.show{display:flex;animation:si .2s;}
+.quick-result.ok{background:rgba(29,185,84,.1);border:1px solid rgba(29,185,84,.3);color:var(--green);}
+.quick-result.err{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.3);color:var(--red);}
+
+/* آخر العمليات */
+.hist{margin-top:.8rem;}
+.hist-lbl{font-size:.68rem;color:var(--muted);font-weight:600;margin-bottom:.35rem;}
+.hi{display:flex;align-items:center;gap:5px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.72rem;}
+.hi-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.hi-dot.g{background:var(--green);}.hi-dot.gu{background:var(--orange);}.hi-dot.d{background:var(--red);}
+.hi-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hi-tag{font-size:.62rem;padding:1px 5px;border-radius:7px;flex-shrink:0;}
+.hi-tag.g{background:rgba(29,185,84,.12);color:var(--green);}
+.hi-tag.gu{background:rgba(255,149,0,.12);color:var(--orange);}
+.hi-tag.d{background:rgba(230,57,70,.12);color:var(--red);}
+.hi-t{font-size:.66rem;color:var(--muted);flex-shrink:0;}
+
+/* ── TABLE PANEL ── */
+.tbl-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.tbl-bar{padding:.8rem 1rem;border-bottom:1px solid var(--border);display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.tbl-bar input{flex:1;min-width:130px;}
+.cnt-bdg{background:rgba(201,168,76,.12);color:var(--gold);padding:3px 8px;border-radius:11px;font-size:.7rem;font-weight:700;white-space:nowrap;}
+.tbl-wrap{overflow:auto;flex:1;max-height:calc(100vh - 280px);}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:7px 10px;text-align:right;font-size:.68rem;color:var(--muted);background:rgba(255,255,255,.02);border-bottom:1px solid var(--border);position:sticky;top:0;white-space:nowrap;}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.03);transition:background .1s;}
+tbody tr:hover{background:rgba(255,255,255,.025);}
+tbody td{padding:7px 10px;font-size:.78rem;vertical-align:middle;}
+.tg{background:rgba(29,185,84,.12);color:var(--green);padding:2px 6px;border-radius:9px;font-size:.64rem;font-weight:700;}
+.tgu{background:rgba(255,149,0,.12);color:var(--orange);padding:2px 6px;border-radius:9px;font-size:.64rem;font-weight:700;}
+.tp2{background:rgba(58,134,255,.1);color:var(--blue);padding:2px 6px;border-radius:9px;font-size:.64rem;font-weight:700;}
+.rn{color:var(--muted);font-size:.68rem;}
+.ay{color:var(--green);font-weight:700;font-size:.76rem;}
+.an{color:var(--muted);font-size:.76rem;}
+.ra{color:var(--blue);font-size:.72rem;text-decoration:none;}
+.ra:hover{text-decoration:underline;}
+.empty{text-align:center;padding:2.5rem;color:var(--muted);font-size:.81rem;}
+
+input{background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:.83rem;outline:none;transition:all .15s;}
+input:focus{border-color:var(--gold);background:rgba(201,168,76,.05);box-shadow:0 0 0 3px rgba(201,168,76,.1);}
+input::placeholder{color:#252540;}
+.btn{padding:7px 12px;border-radius:7px;border:1px solid var(--gold);background:rgba(201,168,76,.1);color:var(--gold);font-family:'Tajawal',sans-serif;font-size:.8rem;cursor:pointer;white-space:nowrap;transition:all .15s;font-weight:600;}
+.btn:hover{background:rgba(201,168,76,.2);}
+.btn-g{border-color:var(--green);background:rgba(29,185,84,.1);color:var(--green);}
+.btn-g:hover{background:rgba(29,185,84,.2);}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:1.6rem;width:90%;max-width:420px;}
+.modal h3{color:var(--gold);margin-bottom:1.2rem;font-size:.94rem;}
+.mf{display:flex;flex-direction:column;gap:4px;margin-bottom:.8rem;}
+.mf label{font-size:.76rem;color:var(--muted);}
+.m-act{display:flex;gap:7px;margin-top:1.2rem;justify-content:flex-end;}
+.m-cancel{background:transparent;border:1px solid var(--border);color:var(--muted);padding:7px 13px;border-radius:7px;font-family:'Tajawal',sans-serif;cursor:pointer;}
+.m-save{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#000;font-weight:700;padding:7px 15px;border-radius:7px;border:none;font-family:'Tajawal',sans-serif;cursor:pointer;}
+
+.toast{position:fixed;bottom:1.2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--card2);border:1px solid var(--border);padding:8px 16px;border-radius:8px;font-size:.8rem;z-index:400;transition:transform .25s;box-shadow:0 6px 24px rgba(0,0,0,.5);display:flex;align-items:center;gap:6px;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.ok{border-color:var(--green);color:var(--green);}
+.toast.warn{border-color:var(--orange);color:var(--orange);}
+.toast.err{border-color:var(--red);color:var(--red);}
+
+@media(max-width:960px){.main-grid{grid-template-columns:1fr;}.stats{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:520px){.stats{grid-template-columns:1fr 1fr;}.wrap{padding:.8rem;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hlogo">📊 داشبورد الحضور — 2025</div>
+  <div class="hright">
+    <div class="live"><div class="ldot"></div>مباشر</div>
+    <button class="hbtn" onclick="loadAll()">🔄 تحديث</button>
+    <button class="hbtn" onclick="openSettings()">⚙️ إعدادات</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="sw('att',this)">📷 الحضور</button>
+  <button class="tab" onclick="sw('manual',this)">✍️ إدخال يدوي</button>
+  <button class="tab" onclick="sw('grads',this)">🎓 الخريجون</button>
+  <button class="tab" onclick="sw('guests',this)">👥 المرافقون</button>
+  <button class="tab" onclick="sw('pay',this)">💳 الإيصالات</button>
+</div>
+
+<div class="wrap">
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat s1"><div class="sn" id="sTot">0</div><div class="sl">إجمالي الخريجين</div></div>
+    <div class="stat s2"><div class="sn" id="sGrad">0</div><div class="sl">خريجون دخلوا</div></div>
+    <div class="stat s3"><div class="sn" id="sGuest">0</div><div class="sl">ضيوف دخلوا</div></div>
+    <div class="stat s4"><div class="sn" id="sTotG">0</div><div class="sl">إجمالي المرافقين</div></div>
+    <div class="stat s5"><div class="sn" id="sPend">0</div><div class="sl">إيصالات للمراجعة</div></div>
+  </div>
+
+  <!-- ══ الحضور ══ -->
+  <div class="tp active" id="tp-att">
+    <div class="main-grid">
+
+      <!-- SCANNER PANEL -->
+      <div class="panel">
+        <div class="ph">
+          <h3>📷 قارئ QR</h3>
+          <span id="scanBadge" style="font-size:.7rem;color:var(--muted)">جاهز</span>
+        </div>
+        <div class="pb">
+
+          <!-- اختيار الوضع -->
+          <div class="scan-mode-btns">
+            <button class="mode-btn active" id="btn-usb" onclick="setMode('usb')">🔌 USB جهاز</button>
+            <button class="mode-btn" id="btn-cam" onclick="setMode('camera')">📸 كاميرا</button>
+          </div>
+
+          <!-- USB ZONE -->
+          <div class="usb-zone ready" id="usbZone" onclick="focusScan()">
+            <input type="text" id="qrInput" autocomplete="off">
+            <span class="sz-icon">🔌</span>
+            <p><strong style="color:var(--text)">اضغط هنا ثم مرّر QR أمام الجهاز</strong></p>
+            <p>USB QR Scanner يعمل تلقائياً كلوحة مفاتيح</p>
+          </div>
+
+          <!-- CAMERA ZONE -->
+          <div class="camera-zone" id="cameraZone">
+            <div class="camera-status" id="camStatus">⏳ جارٍ تشغيل الكاميرا...</div>
+            <div id="qr-reader"></div>
+          </div>
+
+          <!-- نتيجة سريعة -->
+          <div class="quick-result" id="quickResult">
+            <span id="qrIcon">✅</span>
+            <span id="qrMsg">—</span>
+          </div>
+
+          <!-- ═══ اختيار الحاضر ═══ -->
+          <div class="picker" id="picker">
+            <div class="picker-head">
+              <h4>👥 من الذي أمامك؟</h4>
+              <p>اضغط تأكيد الدخول ثم يعود للمسح تلقائياً</p>
+            </div>
+            <div class="picker-body">
+              <div id="personList"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="tbl-panel">
+        <div class="tbl-bar">
+          <input type="text" id="attSrc" placeholder="🔍 بحث..." oninput="fAtt()">
+          <span class="cnt-bdg" id="attCnt">0 سجل</span>
+          <button class="btn btn-g" onclick="loadAll()">🔄</button>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>#</th><th>الاسم</th><th>النوع</th><th>تابع لـ</th><th>وقت الدخول</th></tr></thead>
+            <tbody id="attTb"><tr><td colspan="5"><div class="empty">⏳ بانتظار البيانات</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ الإدخال اليدوي ══ -->
+  <div class="tp" id="tp-manual">
+    <div style="max-width:620px;margin:0 auto;">
+
+      <!-- بطاقة الإدخال اليدوي -->
+      <div class="panel" style="margin-bottom:1rem;">
+        <div class="ph">
+          <h3>✍️ القراءة اليدوية</h3>
+          <span style="font-size:.7rem;color:var(--muted)">عند تعذّر قراءة QR بالجهاز أو الكاميرا</span>
+        </div>
+        <div class="pb">
+
+          <p style="color:var(--muted);font-size:.83rem;margin-bottom:1rem;line-height:1.7;">
+            أدخل رمز QR يدوياً أو ابحث باسم الخريج لإيجاده وتأكيد حضوره.
+          </p>
+
+          <!-- البحث بالاسم أو QR -->
+          <div style="display:flex;gap:8px;margin-bottom:1rem;">
+            <input type="text" id="manualSearchInput"
+              placeholder="ابحث باسم الخريج أو رقم طالبه أو الصق رمز QR..."
+              style="flex:1"
+              oninput="manualSearch()"
+              onkeydown="if(event.key==='Enter')manualSearch()">
+            <button class="btn btn-g" onclick="manualSearch()">🔍 بحث</button>
+          </div>
+
+          <!-- نتائج البحث -->
+          <div id="manualSearchResults"></div>
+
+          <!-- بطاقة الشخص المختار -->
+          <div id="manualSelectedCard" style="display:none;margin-top:1rem;">
+            <div style="background:rgba(201,168,76,.06);border:1.5px solid rgba(201,168,76,.3);border-radius:12px;overflow:hidden;">
+              <div style="padding:.8rem 1rem;background:rgba(201,168,76,.08);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-size:.84rem;font-weight:700;color:var(--gold-l);">✅ الخريج المختار</span>
+                <button class="btn" onclick="clearManualSelection()" style="padding:4px 10px;font-size:.74rem;">✕ إلغاء</button>
+              </div>
+              <div style="padding:1rem;" id="manualCardBody"></div>
+            </div>
+
+            <!-- قائمة الحاضرين لهذا QR -->
+            <div style="margin-top:.8rem;" id="manualPersonList"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- سجل القراءات اليدوية -->
+      <div class="tbl-panel">
+        <div class="tbl-bar">
+          <span style="font-size:.82rem;font-weight:600;color:var(--text);">سجل الإدخالات اليدوية</span>
+          <span class="cnt-bdg" id="manualLogCnt">0</span>
+        </div>
+        <div class="tbl-wrap" style="max-height:300px;">
+          <table>
+            <thead><tr><th>#</th><th>الاسم</th><th>النوع</th><th>تابع لـ</th><th>وقت التسجيل</th></tr></thead>
+            <tbody id="manualLogTb"><tr><td colspan="5"><div class="empty">لا توجد إدخالات يدوية بعد</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ الخريجون ══ -->
+  <div class="tp" id="tp-grads">
+    <div class="tbl-panel">
+      <div class="tbl-bar">
+        <input type="text" id="gradSrc" placeholder="🔍 بحث..." oninput="fGrad()">
+        <span class="cnt-bdg" id="gradCnt">0</span>
+        <button class="btn btn-g" onclick="loadAll()">🔄</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>رقم الطالب</th><th>الاسم</th><th>الجوال</th><th>الكلية</th><th>المرافقون</th><th>الخريج حضر</th><th>الإيصال</th></tr></thead>
+          <tbody id="gradTb"><tr><td colspan="8"><div class="empty">⏳</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ المرافقون ══ -->
+  <div class="tp" id="tp-guests">
+    <div class="tbl-panel">
+      <div class="tbl-bar">
+        <input type="text" id="guestSrc" placeholder="🔍 بحث..." oninput="fGuest()">
+        <span class="cnt-bdg" id="guestCnt">0</span>
+        <button class="btn btn-g" onclick="loadAll()">🔄</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>اسم الضيف</th><th>الجوال</th><th>تابع للخريج</th><th>الكلية</th><th>الحضور</th></tr></thead>
+          <tbody id="guestTb"><tr><td colspan="6"><div class="empty">⏳</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ الإيصالات ══ -->
+  <div class="tp" id="tp-pay">
+    <div class="tbl-panel">
+      <div class="tbl-bar">
+        <input type="text" id="paySrc" placeholder="🔍 بحث..." oninput="fPay()">
+        <span class="cnt-bdg" id="payCnt">0</span>
+        <button class="btn btn-g" onclick="loadAll()">🔄</button>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>الخريج</th><th>رقم الطالب</th><th>الإيصال</th><th>الحالة</th><th>وقت التسجيل</th></tr></thead>
+          <tbody id="payTb"><tr><td colspan="6"><div class="empty">⏳</div></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div class="overlay" id="overlay" onclick="if(event.target.id==='overlay')closeSettings()">
+  <div class="modal">
+    <h3>⚙️ إعدادات النظام</h3>
+    <div class="mf">
+      <label>رابط Google Apps Script (Web App URL)</label>
+      <input type="text" id="urlF" placeholder="https://script.google.com/macros/s/...">
+    </div>
+    <div id="testR" style="font-size:.74rem;color:var(--muted);min-height:16px;margin-top:4px;"></div>
+    <div class="m-act">
+      <button class="m-cancel" onclick="closeSettings()">إلغاء</button>
+      <button class="btn btn-g" style="border-radius:7px;padding:7px 13px;" onclick="testConn()">🔌 اختبار</button>
+      <button class="m-save" onclick="saveSettings()">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════════════
+let URL_ = localStorage.getItem('gs_url') || '';
+
+let allGrads   = [];
+let allGuests  = [];
+let allEntries = [];
+
+// حالة المسح الحالي
+let currentQR   = null;
+let currentData = null;
+let scanMode    = 'usb'; // 'usb' | 'camera'
+
+// منع القراءة المتكررة للـ QR نفسه
+let lastQR     = '';
+let lastQRTime = 0;
+
+// كاميرا
+let html5QrCode = null;
+let camRunning  = false;
+
+// ══════════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════════
+function sw(name, el) {
+  document.querySelectorAll('.tp').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tp-'+name).classList.add('active');
+  el.classList.add('active');
+  if (name === 'att') {
+    setTimeout(() => { if (scanMode === 'usb') focusScan(); }, 100);
+  }
+  if (name === 'manual') {
+    // تأكد من تحميل البيانات
+    if (!allGrads.length) loadAll();
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  SCAN MODE
+// ══════════════════════════════════════════════════
+function setMode(mode) {
+  scanMode = mode;
+  document.getElementById('btn-usb').classList.toggle('active', mode === 'usb');
+  document.getElementById('btn-cam').classList.toggle('active', mode === 'camera');
+  document.getElementById('usbZone').style.display   = mode === 'usb' ? 'block' : 'none';
+  document.getElementById('cameraZone').classList.toggle('active', mode === 'camera');
+
+  if (mode === 'camera') {
+    startCamera();
+  } else {
+    stopCamera();
+    focusScan();
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  CAMERA
+// ══════════════════════════════════════════════════
+function startCamera() {
+  if (camRunning) return;
+  document.getElementById('camStatus').textContent = '⏳ جارٍ تشغيل الكاميرا...';
+
+  html5QrCode = new Html5Qrcode('qr-reader');
+
+  Html5Qrcode.getCameras().then(cameras => {
+    if (!cameras.length) {
+      document.getElementById('camStatus').textContent = '❌ لا توجد كاميرا';
+      return;
+    }
+
+    html5QrCode.start(
+      { facingMode: "environment" }, // ✅ التعديل الوحيد (الكاميرا الخلفية)
+      { fps: 15, qrbox: { width: 260, height: 200 } },
+      (decodedText) => {
+        // منع التكرار لمدة 2 ثانية
+        const now = Date.now();
+        if (decodedText === lastQR && now - lastQRTime < 2000) return;
+        lastQR     = decodedText;
+        lastQRTime = now;
+        processQR(decodedText);
+      },
+      () => {}
+    ).then(() => {
+      camRunning = true;
+      document.getElementById('camStatus').textContent = '✅ الكاميرا تعمل — وجّه QR نحوها';
+    }).catch(err => {
+      document.getElementById('camStatus').textContent = '❌ خطأ: ' + err;
+    });
+
+  }).catch(() => {
+    document.getElementById('camStatus').textContent = '❌ تعذر الوصول للكاميرا';
+  });
+}
+
+function stopCamera() {
+  if (html5QrCode && camRunning) {
+    html5QrCode.stop().catch(() => {});
+    camRunning = false;
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  USB SCANNER
+// ══════════════════════════════════════════════════
+const qrInput = document.getElementById('qrInput');
+let scanTimer;
+
+function focusScan() {
+  if (scanMode === 'usb') qrInput.focus();
+}
+
+qrInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const c = qrInput.value.trim();
+    if (c) { processQR(c); qrInput.value = ''; }
+  }
+});
+
+qrInput.addEventListener('input', () => {
+  clearTimeout(scanTimer);
+  scanTimer = setTimeout(() => {
+    const c = qrInput.value.trim();
+    if (c.length > 5) { processQR(c); qrInput.value = ''; }
+  }, 120);
+});
+
+// إبقاء التركيز
+document.addEventListener('click', e => {
+  if (scanMode !== 'usb') return;
+  const skip = ['qrInput','attSrc','gradSrc','guestSrc','paySrc','urlF'];
+  if (!skip.includes(e.target.id) && e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+    if (document.getElementById('tp-att').classList.contains('active')) setTimeout(focusScan, 60);
+  }
+});
+
+// ══════════════════════════════════════════════════
+//  PROCESS QR — السريع
+// ══════════════════════════════════════════════════
+async function processQR(code) {
+  if (!URL_) { toast('⚠️ ضع الرابط في الإعدادات', 'warn'); return; }
+
+  // إخفاء picker السابق فوراً
+  hidePicker();
+  hideResult();
+
+  S('scanBadge', '⏳...');
+  flashUSB('ok');
+
+  try {
+    const res = await post({ action: 'attend', qrCode: code });
+    handleAttendRes(res, code);
+  } catch(e) {
+    showResult('err', '❌ خطأ في الاتصال');
+    S('scanBadge', '❌ خطأ');
+    toast('❌ ' + e.message, 'err');
+    flashUSB('err');
+  }
+}
+
+function handleAttendRes(data, code) {
+  if (!data.success) {
+    showResult('err', '🚫 ' + (data.msg || 'رمز غير صالح'));
+    S('scanBadge', '❌ مرفوض');
+    flashUSB('err');
+    toast('❌ ' + (data.msg || 'مرفوض'), 'err');
+    addHist(data.msg || 'مرفوض', 'd');
+    return;
+  }
+
+  if (data.type === 'select_attendee') {
+    currentQR   = code;
+    currentData = data;
+    buildPicker(data);
+    S('scanBadge', '👥 اختر من أتى');
+    toast('📋 ' + data.graduateName, 'warn');
+  }
+}
+
+// ══════════════════════════════════════════════════
+//  PICKER — بناء قائمة الخريج + الضيوف
+// ══════════════════════════════════════════════════
+function buildPicker(data) {
+  const list = document.getElementById('personList');
+  let html = '';
+
+  // الخريج
+  html += personRow(
+    data.gradAttended, 'grad',
+    '🎓 الخريج', data.graduateName,
+    `رقم الطالب: ${data.studentId} | ${data.dept||''}`,
+    `confirmPerson('graduate',-1,'${esc(data.graduateName)}')`
+  );
+
+  // الضيوف
+  if (data.guests && data.guests.length) {
+    data.guests.forEach(g => {
+      html += personRow(
+        g.attended, 'guest',
+        '👤 مرافق', g.name,
+        `📱 ${g.phone||'—'}`,
+        `confirmPerson('guest',${g.index},'${esc(g.name)}')`
+      );
+    });
+  }
+
+  list.innerHTML = html;
+  document.getElementById('picker').classList.add('show');
+}
+
+function personRow(isDone, type, badge, name, sub, onclick) {
+  return `
+  <div class="person-row ${isDone?'is-done':(type==='grad'?'is-grad':'is-guest')}">
+    <div class="pr-left">
+      <div class="pr-badge ${isDone?'done':type}">${isDone?'✅ دخل مسبقاً':badge}</div>
+      <div class="pr-name">${name}</div>
+      <div class="pr-sub">${sub}</div>
+    </div>
+    ${isDone
+      ? '<div class="done-label">✅ دخل</div>'
+      : `<button class="confirm-btn" id="cbtn_${name.replace(/\s/g,'_')}" onclick="${onclick}">✅ تأكيد</button>`
+    }
+  </div>`;
+}
+
+// ══════════════════════════════════════════════════
+//  تأكيد الدخول — السريع
+// ══════════════════════════════════════════════════
+async function confirmPerson(type, guestIndex, name) {
+  if (!currentQR) return;
+
+  // تعطيل الزر فوراً (Optimistic UI)
+  const btnId = 'cbtn_' + name.replace(/\s/g, '_');
+  const btn   = document.getElementById(btnId);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+
+  const payload = { action: 'confirmAttendee', qrCode: currentQR, personType: type };
+  if (type === 'guest') payload.guestIndex = guestIndex;
+
+  try {
+    const res = await post(payload);
+
+    if (res.success) {
+      // ✅ نجح — تحديث فوري للإحصائيات
+      if (type === 'graduate') {
+        incrementStat('sGrad');
+      } else {
+        incrementStat('sGuest');
+      }
+
+      toast('✅ ' + name, 'ok');
+      addHist(name + (type === 'guest' ? ' (ضيف)' : ''), type === 'graduate' ? 'g' : 'gu');
+
+      // تحديث السجل فوراً (Optimistic)
+      addEntryToTable(name, type, type === 'guest' ? currentData.graduateName : '');
+
+      // إخفاء picker والعودة للمسح فوراً
+      hidePicker();
+      hideResult();
+      showResult('ok', '✅ تم تسجيل دخول: ' + name);
+      S('scanBadge', '✅ ' + name);
+
+      // العودة للمسح بعد 1.5 ثانية
+      setTimeout(() => {
+        hideResult();
+        S('scanBadge', 'جاهز');
+        if (scanMode === 'usb') focusScan();
+      }, 1500);
+
+      currentQR = null;
+      currentData = null;
+
+      // تحديث البيانات في الخلفية
+      setTimeout(loadAll, 2000);
+
+    } else {
+      toast('❌ ' + (res.msg || 'خطأ'), 'err');
+      if (btn) { btn.disabled = false; btn.textContent = '✅ تأكيد'; }
+    }
+  } catch(e) {
+    toast('❌ خطأ في الاتصال', 'err');
+    if (btn) { btn.disabled = false; btn.textContent = '✅ تأكيد'; }
+  }
+}
+
+// إضافة سجل الدخول للجدول فوراً بدون انتظار Server
+function addEntryToTable(name, type, related) {
+  const now = new Date().toLocaleTimeString('ar', {hour:'2-digit', minute:'2-digit'});
+  const tb  = document.getElementById('attTb');
+  const existing = tb.querySelector('.empty');
+  if (existing) tb.innerHTML = '';
+  const rows  = tb.querySelectorAll('tr').length;
+  const newTr = document.createElement('tr');
+  newTr.innerHTML = `
+    <td class="rn">${rows + 1}</td>
+    <td><strong>${name}</strong></td>
+    <td>${type==='graduate'?'<span class="tg">🎓 خريج</span>':'<span class="tgu">👤 ضيف</span>'}</td>
+    <td style="font-size:.72rem;color:var(--muted)">${type==='graduate'?'—':related}</td>
+    <td style="font-size:.7rem;color:var(--muted)">${now}</td>`;
+  tb.insertBefore(newTr, tb.firstChild);
+  S('attCnt', (rows + 1) + ' سجل');
+}
+
+function incrementStat(id) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = (parseInt(el.textContent) || 0) + 1;
+}
+
+function hidePicker() {
+  document.getElementById('picker').classList.remove('show');
+}
+
+function showResult(type, msg) {
+  const el = document.getElementById('quickResult');
+  el.className = 'quick-result show ' + type;
+  document.getElementById('qrIcon').textContent = type === 'ok' ? '✅' : '❌';
+  document.getElementById('qrMsg').textContent  = msg;
+}
+
+function hideResult() {
+  document.getElementById('quickResult').classList.remove('show');
+}
+
+function flashUSB(type) {
+  if (scanMode !== 'usb') return;
+  const z = document.getElementById('usbZone');
+  z.className = 'usb-zone flash-' + (type === 'ok' ? 'ok' : 'err');
+  setTimeout(() => { z.className = 'usb-zone ready'; }, 700);
+}
+
+function addHist(name, type) {
+  const t   = new Date().toLocaleTimeString('ar', {hour:'2-digit', minute:'2-digit'});
+  const el  = document.getElementById('histEl');
+  if (!el) return;
+  const tag = type==='g'?'خريج':type==='gu'?'ضيف':'مرفوض';
+  const old = el.innerHTML.includes('لا توجد') ? '' : el.innerHTML;
+  el.innerHTML = `<div class="hi"><div class="hi-dot ${type}"></div><div class="hi-name">${name}</div><div class="hi-tag ${type}">${tag}</div><div class="hi-t">${t}</div></div>` + old;
+  const items = el.querySelectorAll('.hi');
+  if (items.length > 8) items[items.length - 1].remove();
+}
+
+function esc(s){ return (s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+// ══════════════════════════════════════════════════
+//  LOAD DATA
+// ══════════════════════════════════════════════════
+async function loadAll() {
+  if (!URL_) return;
+  try {
+    const d = await get(URL_ + '?action=getAll');
+    allGrads   = d.graduates || [];
+    allGuests  = d.guests    || [];
+    allEntries = d.entries   || [];
+    updateStats();
+    renderAtt(allEntries);
+    renderGrads(allGrads);
+    renderGuests(allGuests);
+    renderPay(allGrads);
+  } catch(e) { console.error('loadAll:', e.message); }
+}
+
+function updateStats() {
+  const ge   = allEntries.filter(e => e[3] === 'graduate').length;
+  const gu   = allEntries.filter(e => e[3] === 'guest').length;
+  const pend = allGrads.filter(g => !g[11] || g[11] === 'FALSE' || g[11] === false).length;
+  S('sTot', allGrads.length);
+  S('sGrad', ge);
+  S('sGuest', gu);
+  S('sTotG', allGuests.length);
+  S('sPend', pend);
+}
+
+function renderAtt(data) {
+  S('attCnt', data.length + ' سجل');
+  const tb = document.getElementById('attTb');
+  if (!data.length) { tb.innerHTML = '<tr><td colspan="5"><div class="empty">لا يوجد حضور بعد</div></td></tr>'; return; }
+  tb.innerHTML = [...data].reverse().map((r, i) => `
+    <tr>
+      <td class="rn">${data.length - i}</td>
+      <td><strong>${r[0]||'—'}</strong></td>
+      <td>${r[3]==='graduate'?'<span class="tg">🎓 خريج</span>':'<span class="tgu">👤 ضيف</span>'}</td>
+      <td style="font-size:.72rem;color:var(--muted)">${r[3]==='graduate'?'—':(r[5]||'—')}</td>
+      <td style="font-size:.7rem;color:var(--muted)">${r[1]||'—'}</td>
+    </tr>`).join('');
+}
+
+function renderGrads(data) {
+  S('gradCnt', data.length + ' خريج');
+  const tb = document.getElementById('gradTb');
+  if (!data.length) { tb.innerHTML = '<tr><td colspan="8"><div class="empty">لا يوجد</div></td></tr>'; return; }
+  tb.innerHTML = data.map((r, i) => {
+    const att = allEntries.some(e => e[4] === r[6] && e[3] === 'graduate');
+    const gc  = allGuests.filter(g => g[2] === r[0]).length;
+    const url = r[10] || '';
+    return `<tr>
+      <td class="rn">${i+1}</td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${r[0]||'—'}</td>
+      <td><strong>${r[1]||'—'}</strong></td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${r[3]||'—'}</td>
+      <td style="font-size:.72rem;color:var(--muted)">${r[4]||'—'}</td>
+      <td style="text-align:center"><span class="tgu">${gc}</span></td>
+      <td>${att?'<span class="ay">✅ حضر</span>':'<span class="an">—</span>'}</td>
+      <td>${url?`<a class="ra" href="${url}" target="_blank">📎</a>`:'<span style="color:var(--muted);font-size:.68rem">—</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderGuests(data) {
+  S('guestCnt', data.length + ' ضيف');
+  const tb = document.getElementById('guestTb');
+  if (!data.length) { tb.innerHTML = '<tr><td colspan="6"><div class="empty">لا يوجد</div></td></tr>'; return; }
+  tb.innerHTML = data.map((r, i) => {
+    const att = r[5] === true || r[5] === 'TRUE';
+    return `<tr>
+      <td class="rn">${i+1}</td>
+      <td><strong>${r[0]||'—'}</strong></td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${r[1]||'—'}</td>
+      <td style="font-size:.76rem">${r[3]||'—'}</td>
+      <td style="font-size:.7rem;color:var(--muted)">${r[4]||'—'}</td>
+      <td>${att?'<span class="ay">✅ حضر</span>':'<span class="an">—</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderPay(data) {
+  S('payCnt', data.length + ' سجل');
+  const tb = document.getElementById('payTb');
+  if (!data.length) { tb.innerHTML = '<tr><td colspan="6"><div class="empty">لا توجد</div></td></tr>'; return; }
+  tb.innerHTML = data.map((r, i) => {
+    const appr = r[11] === true || r[11] === 'TRUE';
+    const url  = r[10] || '';
+    return `<tr>
+      <td class="rn">${i+1}</td>
+      <td><strong>${r[1]||'—'}</strong></td>
+      <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${r[0]||'—'}</td>
+      <td>${url?`<a class="ra" href="${url}" target="_blank">📎 عرض الإيصال</a>`:'<span style="color:var(--red);font-size:.7rem">⚠️ لم يُرفع</span>'}</td>
+      <td>${appr?'<span class="ay">✅ مؤكد</span>':'<span class="tp2">⏳ بانتظار</span>'}</td>
+      <td style="font-size:.68rem;color:var(--muted)">${r[9]||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function fAtt(){const q=document.getElementById('attSrc').value.toLowerCase();renderAtt(allEntries.filter(r=>(r[0]||'').toLowerCase().includes(q)));}
+function fGrad(){const q=document.getElementById('gradSrc').value.toLowerCase();renderGrads(allGrads.filter(r=>(r[1]||'').toLowerCase().includes(q)||(r[0]||'').toLowerCase().includes(q)));}
+function fGuest(){const q=document.getElementById('guestSrc').value.toLowerCase();renderGuests(allGuests.filter(r=>(r[0]||'').toLowerCase().includes(q)||(r[3]||'').toLowerCase().includes(q)));}
+function fPay(){const q=document.getElementById('paySrc').value.toLowerCase();renderPay(allGrads.filter(r=>(r[1]||'').toLowerCase().includes(q)));}
+
+// تحديث كل 20 ثانية
+setInterval(loadAll, 20000);
+
+// ══════════════════════════════════════════════════
+//  XHR — سريع
+// ══════════════════════════════════════════════════
+function post(data) {
+  return new Promise((res, rej) => {
+    const x = new XMLHttpRequest();
+    x.open('POST', URL_, true);
+    x.setRequestHeader('Content-Type', 'text/plain');
+    x.timeout = 30000;
+    x.ontimeout = () => rej(new Error('انتهت المهلة'));
+    x.onerror   = () => rej(new Error('خطأ في الشبكة'));
+    x.onload = function() {
+      try { res(JSON.parse(this.responseText)); }
+      catch(e) { rej(new Error('رد غير صالح')); }
+    };
+    x.send(JSON.stringify(data));
+  });
+}
+
+function get(url) {
+  return new Promise((res, rej) => {
+    const x = new XMLHttpRequest();
+    x.open('GET', url, true);
+    x.timeout = 20000;
+    x.ontimeout = () => rej(new Error('انتهت المهلة'));
+    x.onerror   = () => rej(new Error('خطأ'));
+    x.onload = function() {
+      try { res(JSON.parse(this.responseText)); }
+      catch(e) { rej(new Error('رد غير صالح')); }
+    };
+    x.send();
+  });
+}
+
+// ══════════════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════════════
+function openSettings() {
+  document.getElementById('urlF').value = URL_;
+  document.getElementById('testR').textContent = '';
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(() => document.getElementById('urlF').focus(), 100);
+}
+function closeSettings() { document.getElementById('overlay').classList.remove('open'); }
+
+function saveSettings() {
+  const u = document.getElementById('urlF').value.trim();
+  if (!u) return;
+  URL_ = u; localStorage.setItem('gs_url', u);
+  closeSettings();
+  toast('✅ تم الحفظ', 'ok');
+  loadAll();
+  setTimeout(focusScan, 200);
+}
+
+async function testConn() {
+  const u = document.getElementById('urlF').value.trim();
+  if (!u) return;
+  document.getElementById('testR').textContent = '⏳ ...';
+  try {
+    const d = await get(u + '?action=getAll');
+    document.getElementById('testR').innerHTML = `<span style="color:var(--green)">✅ ناجح — ${(d.graduates||[]).length} خريج</span>`;
+  } catch(e) {
+    document.getElementById('testR').innerHTML = `<span style="color:var(--red)">❌ فشل: ${e.message}</span>`;
+  }
+}
+
+// ══════════════════════════════════════════════════
+function S(id, v) { const el = document.getElementById(id); if (el) el.textContent = v; }
+
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + (type || 'ok');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ══════════════════════════════════════════════════
+//  القراءة اليدوية
+// ══════════════════════════════════════════════════
+let manualLog = []; // سجل محلي للإدخالات اليدوية
+let manualSelectedQR   = null;
+let manualSelectedData = null;
+
+function manualSearch() {
+  const q = document.getElementById('manualSearchInput').value.trim();
+  if (!q) return;
+  const res = document.getElementById('manualSearchResults');
+
+  // بحث في البيانات المحملة
+  let found = [];
+
+  // بحث بالاسم أو رقم الطالب في allGrads
+  const lq = q.toLowerCase();
+  found = allGrads.filter(r =>
+    (r[1]||'').toLowerCase().includes(lq) ||
+    (r[0]||'').toString().toLowerCase().includes(lq) ||
+    (r[6]||'').toLowerCase().includes(lq)  // QR code
+  );
+
+  if (!found.length) {
+    res.innerHTML = '<div style="background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.25);border-radius:8px;padding:.8rem;color:var(--red);font-size:.83rem;">❌ لم يُعثر على نتائج — تأكد من الاسم أو رقم الطالب أو رمز QR</div>';
+    return;
+  }
+
+  res.innerHTML = found.slice(0, 5).map((r, i) => `
+    <div onclick="selectManualGrad('${esc(r[6])}')"
+      style="background:rgba(255,255,255,.03);border:1.5px solid var(--border);border-radius:9px;
+             padding:.8rem 1rem;margin-bottom:.5rem;cursor:pointer;transition:all .15s;"
+      onmouseover="this.style.borderColor='var(--gold)';this.style.background='rgba(201,168,76,.05)'"
+      onmouseout="this.style.borderColor='var(--border)';this.style.background='rgba(255,255,255,.03)'">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div style="font-size:.88rem;font-weight:700">${r[1]||'—'}</div>
+          <div style="font-size:.74rem;color:var(--muted);margin-top:2px">
+            رقم الطالب: ${r[0]||'—'} | ${r[4]||'—'} | ${r[5]||'—'}
+          </div>
+        </div>
+        <span style="font-size:.74rem;color:var(--gold);background:rgba(201,168,76,.1);padding:3px 9px;border-radius:8px">اختر</span>
+      </div>
+    </div>`).join('');
+}
+
+async function selectManualGrad(qrCode) {
+  if (!URL_) { toast('⚠️ ضع الرابط في الإعدادات','warn'); return; }
+
+  document.getElementById('manualSearchResults').innerHTML = '<div style="color:var(--muted);font-size:.8rem;padding:.5rem">⏳ جارٍ جلب البيانات...</div>';
+
+  try {
+    const res = await post({ action:'attend', qrCode });
+    if (!res.success) {
+      document.getElementById('manualSearchResults').innerHTML =
+        '<div style="color:var(--red);font-size:.82rem;padding:.5rem">❌ ' + (res.msg||'خطأ') + '</div>';
+      return;
+    }
+
+    manualSelectedQR   = qrCode;
+    manualSelectedData = res;
+    document.getElementById('manualSearchResults').innerHTML = '';
+    document.getElementById('manualSearchInput').value = '';
+
+    // عرض بطاقة الخريج
+    const card = document.getElementById('manualCardBody');
+    card.innerHTML =
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;font-size:.82rem;">' +
+      '<div><span style="color:var(--muted)">الاسم: </span><strong>' + res.graduateName + '</strong></div>' +
+      '<div><span style="color:var(--muted)">رقم الطالب: </span><strong>' + res.studentId + '</strong></div>' +
+      '<div><span style="color:var(--muted)">الكلية: </span><strong>' + (res.dept||'—') + '</strong></div>' +
+      '</div>';
+
+    document.getElementById('manualSelectedCard').style.display = 'block';
+    buildManualPersonList(res);
+  } catch(e) {
+    document.getElementById('manualSearchResults').innerHTML =
+      '<div style="color:var(--red);font-size:.82rem;padding:.5rem">❌ ' + e.message + '</div>';
+  }
+}
+
+function buildManualPersonList(data) {
+  const list = document.getElementById('manualPersonList');
+  let html = '<div style="font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.6rem">اختر من تريد تسجيل حضوره:</div>';
+
+  // الخريج
+  html += manualPersonRow(data.gradAttended, 'graduate', -1,
+    '🎓 الخريج', data.graduateName,
+    'رقم الطالب: ' + data.studentId);
+
+  // الضيوف
+  if (data.guests && data.guests.length) {
+    data.guests.forEach(g => {
+      html += manualPersonRow(g.attended, 'guest', g.index,
+        '👤 مرافق', g.name, '📱 ' + (g.phone||'—'));
+    });
+  }
+
+  list.innerHTML = html;
+}
+
+function manualPersonRow(isDone, type, idx, badge, name, sub) {
+  const btnId = 'mbtn_' + idx;
+  return `
+    <div style="display:flex;align-items:center;gap:10px;border-radius:9px;
+                padding:.7rem .9rem;margin-bottom:.45rem;
+                border:1.5px solid ${isDone?'rgba(80,80,120,.3)':(type==='graduate'?'rgba(29,185,84,.3)':'rgba(255,149,0,.25)')};
+                background:${isDone?'rgba(0,0,0,.15)':(type==='graduate'?'rgba(29,185,84,.04)':'rgba(255,149,0,.03)')};
+                opacity:${isDone?.6:1};">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:.62rem;font-weight:800;padding:2px 6px;border-radius:6px;display:inline-block;margin-bottom:3px;
+                    background:${isDone?'rgba(80,80,120,.15)':(type==='graduate'?'rgba(29,185,84,.15)':'rgba(255,149,0,.15)')};
+                    color:${isDone?'var(--muted)':(type==='graduate'?'var(--green)':'var(--orange)')}">
+          ${isDone?'✅ دخل مسبقاً':badge}
+        </div>
+        <div style="font-size:.88rem;font-weight:700;color:${isDone?'var(--muted)':'var(--text)'}">${name}</div>
+        <div style="font-size:.72rem;color:var(--muted);margin-top:1px">${sub}</div>
+      </div>
+      ${isDone
+        ? '<span style="font-size:.73rem;color:var(--muted);white-space:nowrap">✅ دخل</span>'
+        : `<button id="${btnId}" class="confirm-btn"
+             onclick="confirmManualPerson('${type}',${idx},'${esc(name)}')"
+             style="font-size:.78rem;padding:7px 14px;">
+             ✅ تأكيد يدوي
+           </button>`
+      }
+    </div>`;
+}
+
+async function confirmManualPerson(type, guestIndex, name) {
+  if (!manualSelectedQR) return;
+
+  const btnId = 'mbtn_' + guestIndex;
+  const btn   = document.getElementById(btnId);
+  if (btn) { btn.disabled = true; btn.textContent = '⏳'; }
+
+  const payload = { action:'confirmAttendee', qrCode:manualSelectedQR, personType:type };
+  if (type === 'guest') payload.guestIndex = guestIndex;
+
+  try {
+    const res = await post(payload);
+    if (res.success) {
+      toast('✅ تم تسجيل دخول: ' + name, 'ok');
+
+      // إضافة لسجل اليدوي
+      const now = new Date().toLocaleTimeString('ar',{hour:'2-digit',minute:'2-digit'});
+      manualLog.unshift({ name, type, related: type==='guest'?manualSelectedData.graduateName:'', time: now });
+      renderManualLog();
+
+      // تحديث الإحصائيات
+      if (type==='graduate') incrementStat('sGrad');
+      else incrementStat('sGuest');
+
+      // إضافة للجدول
+      addEntryToTable(name, type, type==='guest'?manualSelectedData.graduateName:'');
+
+      // إعادة بناء القائمة لتحديث حالة الزر
+      await refreshManualState();
+
+      setTimeout(loadAll, 2000);
+    } else {
+      toast('❌ '+(res.msg||'خطأ'),'err');
+      if (btn) { btn.disabled=false; btn.textContent='✅ تأكيد يدوي'; }
+    }
+  } catch(e) {
+    toast('❌ خطأ في الاتصال','err');
+    if (btn) { btn.disabled=false; btn.textContent='✅ تأكيد يدوي'; }
+  }
+}
+
+async function refreshManualState() {
+  if (!manualSelectedQR) return;
+  try {
+    const res = await post({ action:'attend', qrCode:manualSelectedQR });
+    if (res.success && res.type==='select_attendee') {
+      manualSelectedData = res;
+      buildManualPersonList(res);
+    } else {
+      // الجميع دخل
+      document.getElementById('manualPersonList').innerHTML =
+        '<div style="background:rgba(29,185,84,.08);border:1px solid rgba(29,185,84,.25);border-radius:8px;padding:.8rem;color:var(--green);font-size:.83rem;text-align:center;">✅ جميع الأشخاص المسجلين دخلوا الحفل</div>';
+    }
+  } catch(e) {}
+}
+
+function clearManualSelection() {
+  manualSelectedQR   = null;
+  manualSelectedData = null;
+  document.getElementById('manualSelectedCard').style.display = 'none';
+  document.getElementById('manualPersonList').innerHTML = '';
+  document.getElementById('manualSearchInput').value = '';
+  document.getElementById('manualSearchResults').innerHTML = '';
+}
+
+function renderManualLog() {
+  const cnt = document.getElementById('manualLogCnt');
+  const tb  = document.getElementById('manualLogTb');
+  if (cnt) cnt.textContent = manualLog.length + ' سجل';
+  if (!manualLog.length) {
+    tb.innerHTML = '<tr><td colspan="5"><div class="empty">لا توجد إدخالات يدوية بعد</div></td></tr>';
+    return;
+  }
+  tb.innerHTML = manualLog.map((e, i) => `
+    <tr>
+      <td class="rn">${i+1}</td>
+      <td><strong>${e.name}</strong></td>
+      <td>${e.type==='graduate'?'<span class="tg">🎓 خريج</span>':'<span class="tgu">👤 ضيف</span>'}</td>
+      <td style="font-size:.72rem;color:var(--muted)">${e.related||'—'}</td>
+      <td style="font-size:.7rem;color:var(--muted)">${e.time}</td>
+    </tr>`).join('');
+}
+
+// ══════════════════════════════════════════════════
+
+window.onload = () => {
+  if (URL_) loadAll();
+  setMode('usb');
+
+  // إضافة عنصر hist إن لم يكن
+  const pb = document.querySelector('.pb');
+  if (pb && !document.getElementById('histEl')) {
+    const hist = document.createElement('div');
+    hist.className = 'hist';
+    hist.innerHTML = '<div class="hist-lbl">آخر عمليات المسح</div><div id="histEl"><div style="font-size:.7rem;color:var(--muted)">لا توجد بعد</div></div>';
+    pb.appendChild(hist);
+  }
+};
+</script>
+</body>
+</html>

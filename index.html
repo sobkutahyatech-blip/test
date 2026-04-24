@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>داشبورد حفل التخرج 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+<style>
+:root {
+  --gold: #C9A84C;
+  --dark: #06060D;
+  --card: #0C0C18;
+  --border: #1A1A2C;
+  --text: #EEEEF8;
+  --muted: #6868A0;
+  --green: #1DB954;
+  --red: #E63946;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header {
+  background: rgba(6, 6, 13, .97);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.4rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+
+.hlogo {
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.hright {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.live {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .85rem;
+  color: var(--green);
+}
+
+.ldot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .4; transform: scale(1.3); }
+}
+
+.hbtn {
+  background: rgba(201, 168, 76, .1);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: 'Tajawal', sans-serif;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.hbtn:hover {
+  background: rgba(201, 168, 76, .2);
+}
+
+.tabs {
+  display: flex;
+  gap: 3px;
+  padding: .8rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Tajawal', sans-serif;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.tab:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, .04);
+}
+
+.tab.active {
+  background: rgba(201, 168, 76, .12);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.wrap {
+  padding: 1.4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.tp {
+  display: none;
+}
+
+.tp.active {
+  display: block;
+}
+
+/* Statistics Grid */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s;
+}
+
+.stat:hover {
+  transform: translateY(-2px);
+}
+
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.s1::before { background: var(--gold); }
+.s2::before { background: var(--green); }
+.s3::before { background: #FF9500; }
+.s4::before { background: #3A86FF; }
+
+.sn {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  transition: all .3s;
+}
+
+.s1 .sn { color: var(--gold); }
+.s2 .sn { color: var(--green); }
+.s3 .sn { color: #FF9500; }
+.s4 .sn { color: #3A86FF; }
+
+.sl {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* Graduates Table */
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.table-head {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr 0.8fr 0.8fr;
+  gap: 1rem;
+  background: rgba(201, 168, 76, .08);
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: .85rem;
+  text-align: right;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr 0.8fr 0.8fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem;
+  transition: background .2s;
+}
+
+.table-row:hover {
+  background: rgba(201, 168, 76, .04);
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.cell-name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cell-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.status-ok {
+  background: rgba(29, 185, 84, .15);
+  color: var(--green);
+}
+
+.status-pending {
+  background: rgba(255, 149, 0, .15);
+  color: #FF9500;
+}
+
+.btn-confirm {
+  background: var(--gold);
+  color: var(--dark);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: .8rem;
+  transition: all .2s;
+}
+
+.btn-confirm:hover {
+  background: #d4b86d;
+  transform: translateY(-1px);
+}
+
+.btn-confirm:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* No Data */
+.no-data {
+  text-align: center;
+  padding: 3rem 1.4rem;
+  color: var(--muted);
+}
+
+.no-data p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(201, 168, 76, .2);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .table-head, .table-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .table-head > * {
+    font-size: .75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .hright {
+    gap: 8px;
+    font-size: .8rem;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tab {
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: .8rem;
+  }
+  
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hlogo">داشبورد التخرج 2025</div>
+  <div class="hright">
+    <div class="live">
+      <div class="ldot"></div>
+      <span>مباشر</span>
+    </div>
+    <button class="hbtn" onclick="location.reload()">تحديث</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('stats')">الإحصائيات</button>
+  <button class="tab" onclick="switchTab('grads')">الخريجون</button>
+  <button class="tab" onclick="switchTab('entries')">سجل الدخول</button>
+</div>
+
+<div class="wrap">
+  <!-- Statistics Tab -->
+  <div id="stats-tab" class="tp active">
+    <div class="stats" id="statsGrid">
+      <div class="stat s1">
+        <div class="sn" id="totalGrads">0</div>
+        <div class="sl">إجمالي الخريجين</div>
+      </div>
+      <div class="stat s2">
+        <div class="sn" id="attended">0</div>
+        <div class="sl">حضروا الفعل</div>
+      </div>
+      <div class="stat s3">
+        <div class="sn" id="totalGuests">0</div>
+        <div class="sl">إجمالي المرافقين</div>
+      </div>
+      <div class="stat s4">
+        <div class="sn" id="scans">0</div>
+        <div class="sl">عمليات المسح</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graduates Tab -->
+  <div id="grads-tab" class="tp">
+    <div class="table-wrap">
+      <div class="table-head">
+        <div>الاسم</div>
+        <div>البريد الإلكتروني</div>
+        <div>الجامعة</div>
+        <div>الحالة</div>
+        <div>العملية</div>
+      </div>
+      <div id="grads-body"></div>
+    </div>
+  </div>
+
+  <!-- Entries Tab -->
+  <div id="entries-tab" class="tp">
+    <div class="table-wrap">
+      <div class="table-head">
+        <div>الاسم</div>
+        <div>النوع</div>
+        <div>الوقت</div>
+        <div>QR Code</div>
+      </div>
+      <div id="entries-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+
+async function loadData() {
+  try {
+    const response = await fetch(API_URL + '?action=getAll');
+    const data = await response.json();
+    
+    if (data.ok) {
+      updateStats(data);
+      updateGraduates(data.graduates);
+      updateEntries(data.entries);
+    }
+  } catch (e) {
+    console.error('خطأ في تحميل البيانات:', e);
+  }
+}
+
+function updateStats(data) {
+  const grads = data.graduates || [];
+  const entries = data.entries || [];
+  const guests = data.guests || [];
+  
+  const attended = entries.filter(e => e[3] === 'graduate').length;
+  const totalGuests = guests.length;
+  const totalScans = entries.length;
+  
+  document.getElementById('totalGrads').textContent = grads.length;
+  document.getElementById('attended').textContent = attended;
+  document.getElementById('totalGuests').textContent = totalGuests;
+  document.getElementById('scans').textContent = totalScans;
+}
+
+function updateGraduates(grads) {
+  const body = document.getElementById('grads-body');
+  
+  if (grads.length === 0) {
+    body.innerHTML = '<div class="no-data"><p>لا توجد بيانات خريجين</p></div>';
+    return;
+  }
+  
+  body.innerHTML = grads.map((g, idx) => {
+    const name = g[1] || 'غير معروف';
+    const email = g[3] || '-';
+    const uni = g[6] || '-';
+    const attended = g[12] > 0 ? 'حضر' : 'لم يحضر';
+    const qr = g[10] || '';
+    
+    return `
+      <div class="table-row">
+        <div class="cell-name">${name}</div>
+        <div>${email}</div>
+        <div>${uni}</div>
+        <div>
+          <span class="cell-status ${attended === 'حضر' ? 'status-ok' : 'status-pending'}">
+            ${attended}
+          </span>
+        </div>
+        <div>
+          <button class="btn-confirm" onclick="confirmAttendance('${g[0]}')">تأكيد</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateEntries(entries) {
+  const body = document.getElementById('entries-body');
+  
+  if (entries.length === 0) {
+    body.innerHTML = '<div class="no-data"><p>لا توجد عمليات دخول مسجلة</p></div>';
+    return;
+  }
+  
+  body.innerHTML = entries.slice().reverse().slice(0, 100).map(e => {
+    const name = e[0] || 'غير معروف';
+    const type = e[2] || 'غير محدد';
+    const time = e[1] || '-';
+    const qr = e[4] || '-';
+    
+    return `
+      <div class="table-row">
+        <div class="cell-name">${name}</div>
+        <div>${type}</div>
+        <div style="font-size:.85rem;color:var(--muted);">${time}</div>
+        <div style="font-family:monospace;font-size:.8rem;color:var(--gold);">${qr.substring(0, 12)}...</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function confirmAttendance(studentId) {
+  if (!confirm('هل تريد تأكيد حضور هذا الخريج؟')) return;
+  
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'confirmAttend',
+        regId: studentId
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    const result = await response.json();
+    
+    if (result.ok) {
+      alert('تم تأكيد حضور: ' + result.name);
+      loadData();
+    } else {
+      alert('خطأ: ' + (result.msg || 'فشل التأكيد'));
+    }
+  } catch (e) {
+    alert('خطأ في الاتصال: ' + e.message);
+  }
+}
+
+function switchTab(tabName) {
+  document.querySelectorAll('.tp').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
+  document.getElementById(tabName + '-tab').classList.add('active');
+  event.target.classList.add('active');
+}
+
+// تحديث البيانات كل 5 ثوانٍ
+loadData();
+setInterval(loadData, 5000);
+</script>
+
+</body>
+</html>
